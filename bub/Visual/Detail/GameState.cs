@@ -12,7 +12,7 @@ namespace bub.Visual.Detail
         public Field Field { get; set; }
         public Selection Selection { get; set; }
         public int Score { get; set; }
-        public int TurnCount { get; set; }
+        public int MoveCount { get; set; }
         public int SelectionPoints { get; set; }
         public int SelectionCount { get; set; }
     }

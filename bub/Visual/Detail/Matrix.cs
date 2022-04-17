@@ -5,7 +5,7 @@ namespace bub.Visual.Detail
     public class Matrix<T>
         where T : new()
     {
-        private Array data;
+        protected Array data;
         private int width;
         private int height;
 
@@ -13,8 +13,13 @@ namespace bub.Visual.Detail
         public int Height { get { return height; } }
 
         public Matrix(int w, int h)
+            : this(w, h, new T())
         {
-            var defaultValue = new T();
+            
+        }
+
+        public Matrix(int w, int h, T defaultValue)
+        {
             width = w;
             height = h;
             data = Array.CreateInstance(typeof(T), h, w);

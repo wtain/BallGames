@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using bub.Extensions;
 
 namespace bub.Visual
 {
@@ -31,8 +30,8 @@ namespace bub.Visual
         public static readonly DependencyProperty ScoreProperty =
             DependencyProperty.Register("Score", typeof(int), typeof(Bubbler));
 
-        public static readonly DependencyProperty TurnCountProperty =
-            DependencyProperty.Register("TurnCount", typeof(int), typeof(Bubbler));
+        public static readonly DependencyProperty MoveCountProperty =
+            DependencyProperty.Register("MoveCount", typeof(int), typeof(Bubbler));
 
         public static readonly DependencyProperty BallStatisticsProperty =
             DependencyProperty.Register("BallStatistics", typeof(List<BallStats>), typeof(Bubbler));
@@ -42,6 +41,9 @@ namespace bub.Visual
 
         public static readonly DependencyProperty SelectionCountProperty =
             DependencyProperty.Register("SelectionCount", typeof(int), typeof(Bubbler));
+
+        public static readonly DependencyProperty MaxScoreProperty =
+            DependencyProperty.Register("MaxScore", typeof(int), typeof(Bubbler));
 
         public static readonly DependencyProperty CanUndoProperty =
             DependencyProperty.Register("CanUndo", typeof(bool), typeof(Bubbler));
@@ -89,13 +91,19 @@ namespace bub.Visual
             }
         }
 
-        public int TurnCount
+        public int MaxScore
         {
-            get { return (int)GetValue(TurnCountProperty); }
+            get { return (int)GetValue(MaxScoreProperty); }
+            set { SetValue(MaxScoreProperty, value); }
+        }
+
+        public int MoveCount
+        {
+            get { return (int)GetValue(MoveCountProperty); }
             set
             {
-                PreviousState.TurnCount = TurnCount;
-                SetValue(TurnCountProperty, value);
+                PreviousState.MoveCount = MoveCount;
+                SetValue(MoveCountProperty, value);
             }
         }
 
@@ -128,11 +136,19 @@ namespace bub.Visual
         private void UpdateStatistics()
         {
             BallStatistics = _field.CalcStats();
+            MaxScore = new ScoreCalculator().CalculateMaxScore(_field);
         }
 
         public Bubbler()
         {
-            database = new GameDatabase();
+            try // Enable designer
+            {
+                database = new GameDatabase();
+            }
+            catch (Exception)
+            {
+
+            }
 
             _field = new Field(Constants.CellsX, Constants.CellsY);
 
@@ -155,7 +171,7 @@ namespace bub.Visual
             SelectionPoints = 0;
             Selection = null;
             _prevState = null;
-            TurnCount = 0;
+            MoveCount = 0;
             CheckUndo();
             InvalidateVisual();
         }
@@ -187,7 +203,7 @@ namespace bub.Visual
             Selection = PreviousState.Selection;
             SelectionCount = PreviousState.SelectionCount;
             SelectionPoints = PreviousState.SelectionPoints;
-            TurnCount = PreviousState.TurnCount;
+            MoveCount = PreviousState.MoveCount;
             UpdateStatistics();
             _prevState = null;
             CheckUndo();
@@ -245,7 +261,7 @@ namespace bub.Visual
             {
                 PreviousState.Field = new Field(_field);
 
-                _field.EraseBalls(this);
+                _field.EraseBalls(Selection);
 
                 Score += SelectionPoints;
 
@@ -255,7 +271,7 @@ namespace bub.Visual
                 SelectionPoints = 0;
                 Selection = null;
 
-                TurnCount = TurnCount + 1;
+                MoveCount = MoveCount + 1;
 
                 if (_field.CheckGameOver())
                     Application.Current.Dispatcher.BeginInvoke(OnGameOverEvent, null);
@@ -274,7 +290,7 @@ namespace bub.Visual
                 }
 
                 SelectionCount = Selection.Count;
-                SelectionPoints = Selection.Count * (Selection.Count - 1);
+                SelectionPoints = Selection.Points;
             }
             CheckUndo();
             InvalidateVisual();

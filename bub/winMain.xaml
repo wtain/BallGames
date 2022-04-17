@@ -3,12 +3,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:bub"
     xmlns:visual="clr-namespace:bub.Visual"
-    Title="Bubbles" Height="820" Width="720" ResizeMode="NoResize">
+    Title="Bubbles" Height="850" Width="720" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="BaseStyle" TargetType="FrameworkElement">
+            <Setter Property="FrameworkElement.Margin" Value="4" />
+        </Style>
+
+        <Style x:Key="CaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="FrameworkElement.HorizontalAlignment" Value="Left" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -39,24 +45,46 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        
-        <TextBlock Grid.Row="1" 
-                   Text="{Binding Path=(visual:Bubbler.Score), ElementName=Bubbler, StringFormat='Score: {0}'}" 
-                   Margin="4" HorizontalAlignment="Left" />
-        
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding Path=(visual:Bubbler.SelectionPoints), ElementName=Bubbler, StringFormat='Selection points: {0}'}" 
-                   Margin="4" HorizontalAlignment="Left" />
-        
-        <TextBlock Grid.Row="3" 
-                   Text="{Binding Path=(visual:Bubbler.SelectionCount), ElementName=Bubbler, StringFormat='Selection count: {0}'}" 
-                   Margin="4" HorizontalAlignment="Left" />
-        
-        <TextBlock Grid.Row="4" 
-                   Text="{Binding Path=(visual:Bubbler.TurnCount), ElementName=Bubbler, StringFormat='Turn count: {0}'}" 
-                   Margin="4" HorizontalAlignment="Left" />
 
-        <Grid Grid.Row="5" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" 
+                   Text="{Binding Path=(visual:Bubbler.Score), ElementName=Bubbler, StringFormat='Score: {0}'}" 
+                   Style="{StaticResource CaptionStyle}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" 
+                   Text="{Binding Path=(visual:Bubbler.SelectionPoints), ElementName=Bubbler, StringFormat='Selection points: {0}'}" 
+                   Style="{StaticResource CaptionStyle}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" 
+                   Text="{Binding Path=(visual:Bubbler.SelectionCount), ElementName=Bubbler, StringFormat='Selection count: {0}'}" 
+                   Style="{StaticResource CaptionStyle}" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" 
+                   Text="{Binding Path=(visual:Bubbler.MoveCount), ElementName=Bubbler, StringFormat='Move count: {0}'}" 
+                   Style="{StaticResource CaptionStyle}" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" 
+                   Text="{Binding Path=(visual:Bubbler.MaxScore), ElementName=Bubbler, StringFormat='Max score: {0}'}" 
+                   Style="{StaticResource CaptionStyle}" />
+
+            <CheckBox Grid.Row="0" Grid.Column="1" Content="Handicap" Style="{StaticResource BaseStyle}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource BaseStyle}" />
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

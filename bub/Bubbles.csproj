@@ -124,6 +124,7 @@
     <Compile Include="Visual\Detail\GameState.cs" />
     <Compile Include="Visual\Detail\Mask.cs" />
     <Compile Include="Visual\Detail\Matrix.cs" />
+    <Compile Include="Visual\Detail\ScoreCalculator.cs" />
     <Compile Include="Visual\Detail\Selection.cs" />
     <Compile Include="Visual\Interfaces\IBubbler.cs" />
     <Compile Include="winMain.xaml.cs">

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Linq;
 
 namespace bub.Visual.Detail
 {
@@ -11,6 +12,16 @@ namespace bub.Visual.Detail
         : Matrix<int>
     {
         private static Color[] _colors;
+
+        public int NumTotal
+        {
+            get { return Width * Height; }
+        }
+
+        public int NumNonEmpty
+        {
+            get { return data.Cast<int>().Count(n => 0 != n); }
+        }
 
         static Field()
         {
@@ -196,9 +207,9 @@ namespace bub.Visual.Detail
             return 0 != this[x, y];
         }
 
-        public void EraseBalls(IBubbler bubbler)
+        public void EraseBalls(Selection selection)
         {
-            foreach (Ball b in bubbler.Selection.Items)
+            foreach (Ball b in selection.Items)
                 this[b.X, b.Y] = 0;
         }
     }

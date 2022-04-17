@@ -32,5 +32,10 @@ namespace bub.Dialogs
         {
             DialogResult = true;
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

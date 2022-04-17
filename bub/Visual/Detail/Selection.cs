@@ -11,6 +11,8 @@ namespace bub.Visual.Detail
 
         public int Count { get { return Items.Count; } }
 
+        public int Points { get { return Count * (Count - 1); } }
+
         public bool Contains(int x, int y)
         {
             return _selection.Contains(new Ball(x, y));
